@@ -280,10 +280,14 @@ export default function Header({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors"
+              className="lg:hidden p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors relative z-50 flex items-center justify-center w-10 h-10"
               aria-label="Toggle Menu"
             >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              <div className="relative w-5 h-5 flex flex-col justify-between items-center">
+                <span className={`block h-0.5 w-5 rounded-full bg-current transition-all duration-300 transform origin-left ${isMobileMenuOpen ? 'rotate-45 translate-x-1 -translate-y-0.5' : ''}`} />
+                <span className={`block h-0.5 w-5 rounded-full bg-current transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0 scale-x-0' : ''}`} />
+                <span className={`block h-0.5 w-5 rounded-full bg-current transition-all duration-300 transform origin-left ${isMobileMenuOpen ? '-rotate-45 translate-x-1 translate-y-0.5' : ''}`} />
+              </div>
             </button>
           </div>
         </div>
@@ -293,68 +297,62 @@ export default function Header({
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md lg:hidden flex justify-end"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.35, ease: 'easeInOut' }}
+            className="fixed inset-0 z-30 bg-white/98 dark:bg-neutral-950/98 backdrop-blur-2xl lg:hidden flex flex-col justify-between p-6 sm:p-10 pt-28 overflow-y-auto"
           >
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="w-full max-w-sm h-full bg-white dark:bg-neutral-950 p-6 shadow-2xl flex flex-col justify-between"
-            >
-              <div className="mt-20">
-                <div className="flex justify-between items-center pb-6 border-b border-neutral-100 dark:border-neutral-900">
-                  <span className="text-sm font-semibold tracking-wide uppercase text-neutral-400">Menyu</span>
-                  <button
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-1 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900 text-neutral-600 dark:text-neutral-300"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-                <div className="flex flex-col gap-1 mt-6">
-                  {navItems.map((item) => {
-                    const isActive = activePage === item.page;
-                    return (
-                      <button
-                        key={item.page}
-                        onClick={() => {
-                          setActivePage(item.page);
-                          setSelectedProductId(null);
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className={`px-4 py-3.5 rounded-xl text-left text-sm font-semibold flex items-center justify-between transition-colors ${
-                          isActive
-                            ? 'bg-blue-600/10 text-blue-600 dark:bg-cyan-500/10 dark:text-cyan-400'
-                            : 'text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-900'
-                        }`}
-                      >
-                        <span>{item.label}</span>
-                        {isActive && <div className="w-2 h-2 rounded-full bg-blue-600 dark:bg-cyan-400" />}
-                      </button>
-                    );
-                  })}
-                </div>
+            <div className="space-y-6">
+              <div className="flex justify-between items-center pb-4 border-b border-neutral-100 dark:border-neutral-900/60">
+                <span className="text-xs font-black tracking-widest uppercase text-neutral-400 font-mono">Menyu</span>
               </div>
+              <div className="flex flex-col gap-1">
+                {navItems.map((item, index) => {
+                  const isActive = activePage === item.page;
+                  return (
+                    <motion.button
+                      key={item.page}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      onClick={() => {
+                        setActivePage(item.page);
+                        setSelectedProductId(null);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`px-4 py-4 rounded-xl text-left text-base font-black flex items-center justify-between transition-all ${
+                        isActive
+                          ? 'bg-blue-600/10 text-blue-600 dark:bg-cyan-500/10 dark:text-cyan-400'
+                          : 'text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-900/40'
+                      }`}
+                    >
+                      <span className="text-fluid-lg">{item.label}</span>
+                      {isActive && <div className="w-2 h-2 rounded-full bg-blue-600 dark:bg-cyan-400" />}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
 
-              {/* Mobile Drawer Footer Contacts */}
-              <div className="border-t border-neutral-100 dark:border-neutral-900 pt-6">
-                <p className="text-xs text-neutral-400">{t.appName} – Premium Store</p>
-                <div className="mt-3 flex flex-col gap-2">
-                  <a href="tel:+998901234567" className="text-xs text-neutral-700 dark:text-neutral-300 font-medium flex items-center gap-2">
+            {/* Mobile Drawer Footer Contacts */}
+            <div className="border-t border-neutral-100 dark:border-neutral-900/60 pt-6 mt-8">
+              <p className="text-xs text-neutral-400 uppercase font-mono tracking-wider font-extrabold">{t.appName} – Premium Store</p>
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="tel:+998901234567" className="text-xs text-neutral-700 dark:text-neutral-300 font-bold flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center">
                     <Phone className="w-4 h-4 text-neutral-400" />
-                    <span>+998 90 123 45 67</span>
-                  </a>
-                  <p className="text-xs text-neutral-500 flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-neutral-400 shrink-0 mt-0.5" />
-                    <span>{t.footerAddress}</span>
-                  </p>
-                </div>
+                  </div>
+                  <span>+998 90 123 45 67</span>
+                </a>
+                <p className="text-xs text-neutral-500 flex items-start gap-2">
+                  <div className="w-8 h-8 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center shrink-0">
+                    <MapPin className="w-4 h-4 text-neutral-400" />
+                  </div>
+                  <span className="leading-normal">{t.footerAddress}</span>
+                </p>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

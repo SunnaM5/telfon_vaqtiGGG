@@ -135,7 +135,7 @@ export default function Home({
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-neutral-950 dark:text-white leading-[1.1]"
+              className="text-fluid-5xl lg:text-fluid-6xl font-black tracking-tight text-neutral-950 dark:text-white leading-[1.1]"
             >
               {t.heroTitle}
             </motion.h1>

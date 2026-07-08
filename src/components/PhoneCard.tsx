@@ -159,7 +159,7 @@ export default function PhoneCard({
                   e.stopPropagation();
                   setActiveColorIdx(idx);
                 }}
-                className={`w-3.5 h-3.5 rounded-full border transition-all ${
+                className={`micro-btn w-3.5 h-3.5 rounded-full border transition-all ${
                   activeColorIdx === idx
                     ? 'ring-2 ring-offset-2 ring-blue-500 dark:ring-offset-neutral-950 scale-110'
                     : 'border-neutral-200/20 dark:border-neutral-800'
