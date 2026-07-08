@@ -132,10 +132,10 @@ export default function Header({
       </div>
 
       <header
-        className={`fixed top-8 left-0 right-0 z-40 transition-all duration-300 mx-auto w-[95%] max-w-7xl rounded-2xl border ${
+        className={`fixed left-0 right-0 z-40 transition-all duration-300 mx-auto w-[95%] max-w-7xl rounded-2xl border ${
           isScrolled
-            ? 'bg-neutral-950/70 backdrop-blur-md shadow-lg border-white/5 py-3 shadow-glow-cyan'
-            : 'bg-transparent border-transparent py-5'
+            ? 'top-2 md:top-6 bg-white/80 dark:bg-neutral-950/75 backdrop-blur-md shadow-lg border-neutral-200/60 dark:border-white/5 py-2.5 md:py-3 shadow-glow-cyan'
+            : 'top-10 md:top-12 bg-white/40 dark:bg-neutral-950/10 backdrop-blur-sm border-neutral-100/50 dark:border-white/5 py-4 md:py-5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
@@ -301,12 +301,29 @@ export default function Header({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.35, ease: 'easeInOut' }}
-            className="fixed inset-0 z-30 bg-white/98 dark:bg-neutral-950/98 backdrop-blur-2xl lg:hidden flex flex-col justify-between p-6 sm:p-10 pt-28 overflow-y-auto"
+            className="fixed inset-0 z-50 bg-white dark:bg-neutral-950 lg:hidden flex flex-col justify-between p-6 sm:p-10 pt-6 overflow-y-auto"
           >
             <div className="space-y-6">
+              {/* Drawer Top Header Row */}
               <div className="flex justify-between items-center pb-4 border-b border-neutral-100 dark:border-neutral-900/60">
-                <span className="text-xs font-black tracking-widest uppercase text-neutral-400 font-mono">Menyu</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm shadow-md">
+                    T
+                  </div>
+                  <span className="text-sm font-black tracking-wider uppercase text-neutral-900 dark:text-white font-mono">
+                    {t.appName}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 rounded-xl text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors"
+                  aria-label="Close menu"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
+
+              {/* Navigation Items */}
               <div className="flex flex-col gap-1">
                 {navItems.map((item, index) => {
                   const isActive = activePage === item.page;
@@ -315,13 +332,13 @@ export default function Header({
                       key={item.page}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
+                      transition={{ delay: index * 0.04 }}
                       onClick={() => {
                         setActivePage(item.page);
                         setSelectedProductId(null);
                         setIsMobileMenuOpen(false);
                       }}
-                      className={`px-4 py-4 rounded-xl text-left text-base font-black flex items-center justify-between transition-all ${
+                      className={`px-4 py-3.5 rounded-xl text-left text-base font-bold flex items-center justify-between transition-all ${
                         isActive
                           ? 'bg-blue-600/10 text-blue-600 dark:bg-cyan-500/10 dark:text-cyan-400'
                           : 'text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-900/40'
