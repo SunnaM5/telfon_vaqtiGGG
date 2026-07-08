@@ -1,0 +1,6 @@
+{
+  "name": "Telefon Vaqti",
+  "description": "Ultra-modern premium online phone store in Uzbekistan offering installment plans, trade-in, and authentic mobile devices.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
